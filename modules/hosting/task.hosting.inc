@@ -72,8 +72,14 @@ function drush_hosting_task_validate($id, $type = null) {
   else {
     drush_set_error('HOSTING_INVALID_TASK', t("This task is not valid"));
   }
+  
+  $tasks = hosting_available_tasks($task->ref->type);
+  drush_log(print_r($tasks[$task->task_type],1));
+
   // Find task type and pass through if it needs provision_save
-  if (!isset($task->provision_save)){
+  if (isset($tasks[$task->task_type]['provision_save'])){
+    $task->provision_save = TRUE;
+  } else {
     $task->provision_save = FALSE;
   }
 }
@@ -94,9 +100,8 @@ function drush_hosting_task() {
 
   // Make sure argument order is correct
   ksort($task->args);
-
   // On install/verify, save the named context
-  if ($task->provision_save === TRUE) {
+  if ($task->provision_save) {
     // XXX: we copy module_invoke_all() here because it doesn't pass by
     // reference and it breaks under PHP 5.3
     $hook = 'hosting_' . $task->ref->type . '_context_options';

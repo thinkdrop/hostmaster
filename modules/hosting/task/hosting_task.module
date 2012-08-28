@@ -1149,7 +1149,6 @@ function hosting_task_fetch_tasks($rid) {
 
     $return[$type] = $task;
   }
-
   return $return;
 }
 
