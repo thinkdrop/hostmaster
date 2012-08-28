@@ -72,7 +72,7 @@ function drush_hosting_task_validate($id, $type = null) {
   else {
     drush_set_error('HOSTING_INVALID_TASK', t("This task is not valid"));
   }
-drush_set_error('HOSTING_INVALID_TASK', print_r($task, 1));
+  // Find task type and pass through if it needs provision_save
   if (!isset($task->provision_save)){
     $task->provision_save = FALSE;
   }
